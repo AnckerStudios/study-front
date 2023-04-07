@@ -1,0 +1,6 @@
+<div *ngIf="groups" class=" mx-auto container max-w-2xl flex flex-col gap-4 mt-4">
+    <button *ngFor="let group of groups" routerLink="/groups/{{group.id}}" class=" rounded-xl shadow-lg p-4">
+        <div class=" text-xs">id: {{group.id}}</div>
+        <div class=" font-bold text-lg font-sans">{{group.name}}</div>
+    </button>
+</div>
