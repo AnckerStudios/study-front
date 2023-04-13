@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
+import { Subject, takeUntil } from 'rxjs';
 import { IGroup } from 'src/app/model/group';
+import { Modal } from 'src/app/model/modal';
 import { GroupService } from 'src/app/services/group.service';
+import { ModalDialogService } from 'src/app/services/modal-dialog.service';
 
 @Component({
   selector: 'app-groups-page',
@@ -8,13 +11,63 @@ import { GroupService } from 'src/app/services/group.service';
   styleUrls: ['./groups-page.component.css']
 })
 export class GroupsPageComponent {
-  groups?:IGroup[];
-  constructor(private groupService: GroupService){}
+  groups?: IGroup[];
+  notifier$ = new Subject();
+  constructor(
+    private groupService: GroupService,
+    private md: ModalDialogService
+  ) { }
 
-  ngOnInit(){
-    this.getStudents();
+  ngOnInit() {
+    this.getGroups();
   }
-  getStudents(){
-    this.groupService.getGroups().subscribe(item=>this.groups = item);
+
+  getGroups() {
+    this.groupService.getGroups()
+      .pipe(takeUntil(this.notifier$))
+      .subscribe({
+        next: (data) => {
+          this.groups = data;
+        },
+        error: (e) => {
+          console.error("r err", e)
+          if(e.status === 0)
+          console.log("LLLLLLLLLLL");
+          
+        }
+      });
+  }
+
+  saveGroup(group: IGroup | undefined, index: number) {
+    console.log("add")
+    this.md.openDialog<IGroup>(group, Modal.saveGroup)
+      .pipe(takeUntil(this.notifier$))
+      .subscribe({
+        next: (data) => {
+          console.log("data", data)
+          if (this.groups) {
+            group ? this.groups[index] = data : this.groups?.push(data);
+          }
+        },
+        error: (e) => console.error("r err", e)
+      });
+  }
+
+  deleteGroup(group: IGroup) {
+    this.groupService.deleteGroup(group.id)
+      .pipe(takeUntil(this.notifier$))
+      .subscribe({
+        next: (data) => {
+          console.log("delete ", data);
+          this.groups = this.groups?.filter((item) => item.id != group.id);
+        },
+        error: (e) => {
+          console.error("r err", e)
+        }
+      })
+  }
+  
+  ngOnDestroy() {
+    this.notifier$.complete();
   }
 }

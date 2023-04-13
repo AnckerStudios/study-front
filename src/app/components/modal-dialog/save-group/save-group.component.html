@@ -1,0 +1,9 @@
+<form [formGroup]="form" (submit)="confirm()" class="flex flex-col gap-4">
+    <input class="rounded-2xl border w-full px-4 py-2 bg-gray-200 " formControlName="name">
+    <button type="submit">oK</button>
+    <div>{{form.value | json}}</div>
+</form>
+
+<div>
+
+</div>

@@ -1,0 +1,14 @@
+<form [formGroup]="form" (submit)="confirm()" class="flex flex-col gap-4">
+    <input class="rounded-2xl border w-full px-4 py-2 bg-gray-200 " formControlName="name">
+    <input type="date" class="rounded-2xl border w-full px-4 py-2 bg-gray-200 " formControlName="birthdate">
+    <input type="number" class="rounded-2xl border w-full px-4 py-2 bg-gray-200 " formControlName="number">
+    <select *ngIf="groups" formControlName="group" class="rounded-2xl border w-full px-4 py-2 bg-gray-200 ">
+        <option *ngFor="let group of groups" [ngValue]="group.id">{{group.name}}</option>
+    </select>
+    <div *ngIf="!groups" class="rounded-2xl border w-full px-4 py-2 bg-gray-200 ">
+        Загрузка групп
+    </div>
+    
+    <button type="submit">oK</button>
+    <div>{{form.value | json}}</div>
+</form>

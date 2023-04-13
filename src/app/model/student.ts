@@ -1,7 +1,7 @@
 export interface IStudent{
     id: number,
     name: string,
-    birthdate: Date,
+    birthdate: string,
     number: number,
     group: number
 }
