@@ -1,46 +1,30 @@
 <div class=" mx-auto container max-w-2xl mt-4">
     <div *ngIf="groups" class="flex flex-col gap-4">
-        <div *ngIf="!groups.length">
-            Пока нет ниодной группы
+        <div
+            class=" font-bold text-5xl font-sans flex justify-center bg-gradient-to-r from-amber-500 to-pink-500 bg-clip-text text-transparent p-4">
+            {{groups.length ? 'Группы' : 'Пока нет ни одной группы'}}
         </div>
-        <button *ngFor="let group of groups; let i=index"  class=" rounded-xl shadow-lg p-8 relative">
-            <div routerLink="/groups/{{group.id}}" class="w-full h-full">
-                <!-- <div class=" text-xs">id: {{group.id}}</div> -->
-                <div class=" font-bold text-lg font-sans">{{group.name}}</div>
-                <div class=" text-xs">студентов: {{group.students.length}}</div>
+        <button *ngFor="let group of groups; let i=index" class="group contOrange">
+            <div routerLink="/groups/{{group.id}}" class="inside">
+                <div class=" font-bold text-2xl hoverOrange">{{group.name}}</div>
+                <div class=" text-xs hoverOrange">студентов: {{group.students.length}}</div>
             </div>
 
             <div
-                class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 font-semibold  select-none items-center">
-                <div class=" flex gap-4">
-                    <div class=" text-gray-400 font-semibold hover:text-yellow-500 "
-                        (click)="saveGroup(group,i)">
+                class="invisible group-hover:visible absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 font-semibold  select-none items-center">
+                <div class=" flex gap-4 ">
+                    <div class="select-none hover:scale-150" (click)="saveGroup(group,i)">
                         ✎
+
                     </div>
-                    <div class=" text-gray-400 font-semibold hover:text-red-500"
-                        (click)="deleteGroup(group)">
+                    <div class="  select-none hover:scale-150" (click)="deleteGroup(group)">
                         ❌
                     </div>
                 </div>
             </div>
         </button>
-
-
-        <button class=" rounded-xl shadow-lg p-4 hover:bg-green-100" (click)="saveGroup(undefined,0)">
-            <div class=" font-bold text-lg font-sans">add</div>
-        </button>
+        <app-button text="Добавить группу" (eventClick)="saveGroup(undefined,0)" />
     </div>
-    
-    <div *ngIf="!groups" class="flex gap-4 justify-center items-center">
+    <app-loading *ngIf="!groups" />
 
-
-        <svg class="animate-spin h-10 w-10 text-gray-600" xmlns="http://www.w3.org/2000/svg" fill="none"
-            viewBox="0 0 24 24">
-            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-            <path class="opacity-75" fill="currentColor"
-                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
-            </path>
-        </svg>
-        <div class="text-xl font-bold text-gray-400">ЗАГРУЗКА...</div>
-    </div>
 </div>

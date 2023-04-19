@@ -1,16 +1,28 @@
+<div class="relative">
+    <form [formGroup]="form" class="flex flex-col gap-4 {{status && 'invisible'}}">
+        <div
+            class=" font-bold text-5xl font-sans flex justify-center bg-gradient-to-r from-amber-500 to-pink-500 bg-clip-text text-transparent p-4">
+            {{!form.value.id ? "Создание " : "Редактирование"}} </div>
+        <input class="rounded-2xl border w-full px-4 py-2 bg-gray-200 " formControlName="name" placeholder="Имя">
+        <input type="date" class="rounded-2xl border w-full px-4 py-2 bg-gray-200 " formControlName="birthdate">
+        <input type="number" class="rounded-2xl border w-full px-4 py-2 bg-gray-200 " formControlName="number"
+            placeholder="Номер">
+        <select *ngIf="groups" formControlName="group" class="rounded-2xl border w-full px-4 py-2 bg-gray-200 ">
+            <option *ngFor="let group of groups" [ngValue]="group.id">{{group.name}}</option>
+        </select>
+        <div *ngIf="!groups" class="rounded-2xl border w-full px-4 py-2 bg-gray-200 ">
+            Загрузка групп
+        </div>
 
-<form [formGroup]="form" (submit)="confirm()" class="flex flex-col gap-4">
-    <div class="text-center text-3xl font-semibold border-b pb-4 ">{{!form.value.id ? "Создание " : "Редактирование"}} </div>
-    <input class="rounded-2xl border w-full px-4 py-2 bg-gray-200 " formControlName="name">
-    <input type="date" class="rounded-2xl border w-full px-4 py-2 bg-gray-200 " formControlName="birthdate">
-    <input type="number" class="rounded-2xl border w-full px-4 py-2 bg-gray-200 " formControlName="number">
-    <select *ngIf="groups" formControlName="group" class="rounded-2xl border w-full px-4 py-2 bg-gray-200 ">
-        <option *ngFor="let group of groups" [ngValue]="group.id">{{group.name}}</option>
-    </select>
-    <div *ngIf="!groups" class="rounded-2xl border w-full px-4 py-2 bg-gray-200 ">
-        Загрузка групп
-    </div>
-    
-    <button type="submit">oK</button>
-    <div>{{form.value | json}}</div>
-</form>
+        <app-button text="ok" (eventClick)="confirm()" />
+    </form>
+
+    <app-loading *ngIf="status == 'loading'" />
+
+    <div *ngIf="status == 'error'" class="absolute right-1/2 top-1/2 translate-x-1/2 -translate-y-1/2"> 
+        <div class=" font-bold text-5xl font-sans flex justify-center bg-gradient-to-r from-amber-500 to-pink-500 bg-clip-text text-transparent p-4">
+            Ошибка!
+        </div>
+        <app-button text="ok" (eventClick)="md.close()" />
+       </div>
+</div>

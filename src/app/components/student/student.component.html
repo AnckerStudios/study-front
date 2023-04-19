@@ -1,7 +1,7 @@
-<button *ngIf="student" class=" w-full rounded-xl group bg-gradient-to-r from-amber-500 to-pink-500 relative p-1 hover:scale-105 transition">
-    <div routerLink="/students/{{student.id}}" class="w-full h-full p-3 shadow-inner group-hover:bg-white transition rounded-lg">
+<button *ngIf="student" class="group contOrange">
+    <div routerLink="/students/{{student.id}}" class="inside">
 
-        <div class=" font-bold text-2xl font-sans mx-auto ">{{ emoji}} <span class="group-hover:bg-gradient-to-r text-white group-hover:from-amber-500 group-hover:to-pink-500 group-hover:bg-clip-text group-hover:text-transparent">{{student.name}}</span></div>
+        <div class=" font-bold text-2xl font-sans mx-auto ">{{ emoji}} <span class="hoverOrange">{{student.name}}</span></div>
     </div>
     
     <div

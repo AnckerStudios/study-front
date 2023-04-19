@@ -1,10 +1,8 @@
-<form [formGroup]="form" (submit)="confirm()" class="flex flex-col gap-4">
-    <div class="text-center text-3xl font-semibold border-b pb-4 ">{{!form.value.id ? "Создание " : "Редактирование"}} </div>
-    <input class="rounded-2xl border w-full px-4 py-2 bg-gray-200 " formControlName="name">
-    <button type="submit">oK</button>
-    <div class="max-w-full">{{form.value | json}}</div>
+<form [formGroup]="form"  class="flex flex-col gap-10 py-10">
+    <div class=" font-bold text-5xl font-sans flex justify-center bg-gradient-to-r from-amber-500 to-pink-500 bg-clip-text text-transparent ">{{!form.value.id ? "Создание " : "Редактирование"}} </div>
+    <input class="rounded-xl border w-full px-4 py-4 bg-gray-200 text-xl" formControlName="name" placeholder="Название">
+    <app-button text="ok" (eventClick)="confirm()"/> 
+    <!-- <button type="submit">oK</button> -->
 </form>
 
-<div>
 
-</div>

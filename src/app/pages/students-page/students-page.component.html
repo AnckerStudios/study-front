@@ -1,30 +1,12 @@
-<div class=" mx-auto container max-w-2xl flex flex-col gap-4 mt-4">
-    <button *ngFor="let student of students; let i=index" class=" rounded-xl shadow-lg p-4 relative">
-        <div routerLink="/students/{{student.id}}" class="w-full h-full">
-            <div class=" text-xs">id: {{student.id}}</div>
-            <div>{{student.number}}</div>
-            <div class=" font-bold text-lg font-sans">{{student.name}}</div>
-            <div class=" text-xs">группа: {{student.group}}</div>
-            
-        </div>
-
+<div class=" mx-auto container max-w-2xl">
+    <div *ngIf="students" class="  flex flex-col gap-4 mt-4">
         <div
-            class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 font-semibold  select-none items-center">
-            <div class=" flex gap-4">
-                <div class=" text-gray-400 font-semibold hover:text-yellow-500 select-none"
-                    (click)="saveStudent(student,i)">
-                    E
-                </div>
-                <div class=" text-gray-400 font-semibold hover:text-red-500 select-none"
-                    (click)="deleteStudent(student)">
-                    ✕
-                </div>
-            </div>
+            class=" font-bold text-4xl font-sans flex justify-center bg-gradient-to-r from-amber-500 to-pink-500 bg-clip-text text-transparent p-4">
+            {{students.length ? 'Студенты' : 'Пока нет ни одного студента'}}
         </div>
-    </button>
-    <button (click)="saveStudent(undefined,0)" class=" rounded-xl shadow-lg p-4 bg-blue-300">
-            
-        <div>add</div>
-       
-    </button>
+        <app-student *ngFor="let student of students" [student]="student" (eventDelete)="deleteStudent($event)"/>
+        
+        <app-button text="Добавить студента" (eventClick)="saveStudent()"/>
+    </div>
+    <app-loading *ngIf="!students" />
 </div>

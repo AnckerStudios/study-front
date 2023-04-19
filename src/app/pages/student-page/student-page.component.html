@@ -1,7 +1,14 @@
 
 <div *ngIf="student" class=" mx-auto container max-w-2xl flex flex-col gap-4 mt-4">
-    <div class=" text-xs">id: {{student.id}}</div>
-        <div class=" font-bold text-lg font-sans">{{student.name}}</div>
-        <div>{{student.number}}</div>
-        <div >ДР: {{student.birthdate | date:'shortDate'}}</div>
+    <div class=" font-bold text-5xl font-sans flex justify-center bg-gradient-to-r from-amber-500 to-pink-500 bg-clip-text text-transparent p-4">
+        {{student.name}}
+
+   
+    </div>
+    <div class="bg-gradient-to-r from-amber-500 to-pink-500 rounded-xl p-10 flex flex-col gap-4">
+        <div class="text-white text-3xl font-bold">📌 Номер: {{student.number}}</div>
+        <div class="text-white  text-3xl font-bold">🥳 День Рождения: {{student.birthdate | date:'mediumDate'}}</div>
+    </div>
+       
 </div>
+<app-loading *ngIf="!student"/>

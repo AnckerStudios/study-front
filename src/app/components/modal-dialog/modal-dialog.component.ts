@@ -21,10 +21,6 @@ export class ModalDialogComponent {
 
   constructor(public md: ModalDialogService) {}
   ngOnInit(){
-    console.log("AAAAAAAAA",this.appModel);
-    // const viewContainerRef = this.appModel.viewContainerRef;
-    // const componentRef = viewContainerRef.createComponent(this.md.compnent);
-    // console.log("viewContainerRef",componentRef);
     this.md.component$.subscribe({
       next: (data)=>{
         if(data){
@@ -38,7 +34,6 @@ export class ModalDialogComponent {
   }
   confirm<T>(data: T) {
     this.md.confirm<T>(data);
-    console.log("modal global",data);
   }
   close(){
     this.md.close()

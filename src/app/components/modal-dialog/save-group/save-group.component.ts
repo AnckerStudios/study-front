@@ -35,7 +35,7 @@ export class SaveGroupComponent implements ModalComponent{
   })
 
   confirm() {
-    this.groupService.saveGroup(this.form.getRawValue() as IGroup).subscribe({
+    this.form.status == "VALID" && this.groupService.saveGroup(this.form.getRawValue() as IGroup).subscribe({
       next: (data) => {
         this.response.emit(data);
       },

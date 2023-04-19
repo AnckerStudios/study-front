@@ -14,11 +14,9 @@ import { StudentService } from 'src/app/services/student.service';
   styleUrls: ['./save-student.component.css']
 })
 export class SaveStudentComponent implements ModalComponent{
-
+  status?:string;
   @Output() response = new EventEmitter<IStudent>();
   groups?: IGroup[];
-  dateStringControl = new FormControl('2020-09-28');
-  dateObjectControl = new FormControl(new Date());
   constructor(
     private fb: FormBuilder,
     public md: ModalDialogService,
@@ -26,12 +24,11 @@ export class SaveStudentComponent implements ModalComponent{
     private groupService: GroupService,
   ) { }
   ngOnInit() {
-    console.log("dsds", this.md.getInput());
     let student = this.md.getInput<IStudent>();
     student && this.form.setValue({
       id: student.id,
       name: student.name,
-      birthdate: student.birthdate ,
+      birthdate: student.birthdate, 
       number: student.number,
       group: student.group
 
@@ -51,11 +48,15 @@ export class SaveStudentComponent implements ModalComponent{
     this.groupService.getGroups().subscribe(item => this.groups = item);
   }
   confirm() {
-    this.studentService.saveStudent(this.form.getRawValue() as IStudent).subscribe({
+    this.status = 'loading'
+    this.form.status == "VALID" && this.studentService.saveStudent(this.form.getRawValue() as IStudent).subscribe({
       next: (data) => {
         this.response.emit(data);
       },
-      error: (e) => console.error("r err", e)
+      error: (e) => {
+        console.error("r err", e);
+        this.status = 'error'
+      }
     })
   }
 }

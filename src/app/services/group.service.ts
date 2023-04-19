@@ -12,19 +12,19 @@ export class GroupService {
   constructor(private http: HttpClient) { }
   
   getGroups():Observable<IGroup[]>{
-    return this.http.get<IGroup[]>(this.url);
+    return this.http.get<IGroup[]>(this.url).pipe(delay(500));
     //of(GROUPS).pipe(delay(1000));
   }
   getGroup(id:number):Observable<IGroup>{
-    return this.http.get<IGroup>(`${this.url}/findById`,{params: new HttpParams().set('id', id)});
+    return this.http.get<IGroup>(`${this.url}/findById`,{params: new HttpParams().set('id', id)}).pipe(delay(500));
     // of(GROUPS.find(item => item.id ===id) as IGroup).pipe(delay(1000));
   }
   saveGroup(group: IGroup):Observable<IGroup>{
-    return this.http.post<IGroup>(this.url, group);
+    return this.http.post<IGroup>(this.url, group).pipe(delay(500));
     // of(group).pipe(delay(1000));
   }
   deleteGroup(id: number){
-    return this.http.delete<IGroup>(this.url,{params: new HttpParams().set('id', id)});
+    return this.http.delete<IGroup>(this.url,{params: new HttpParams().set('id', id)}).pipe(delay(500));
   }
 
 }

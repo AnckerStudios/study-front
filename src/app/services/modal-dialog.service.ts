@@ -20,20 +20,6 @@ export class ModalDialogService {
     console.log("service");
     this.inputData = obj;
      this.component$.next(type);
-    //this.compnent = type;
-    
-    //this.entry?.clear()
-    //const view = this.entry?.createComponent(type);
-    // view!.instance?['data'] = obj;
-    
-
-    //console.log("entry",this.entry);
-    //console.log("view",view);
-    
-    
-    // this.compnent = type;
-
-    // this.modalType = type;
     return this.res = new Subject<T>();
   }
   confirm<T>(obj: T){

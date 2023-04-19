@@ -16,6 +16,8 @@ import { DelModalComponent } from './components/modal-dialog/del-modal/del-modal
 import { HttpClientModule } from '@angular/common/http';
 import { ModelDirective } from './model.directive';
 import { StudentComponent } from './components/student/student.component';
+import { ButtonComponent } from './components/button/button.component';
+import { LoadingComponent } from './components/loading/loading.component';
 
 
 @NgModule({
@@ -31,7 +33,9 @@ import { StudentComponent } from './components/student/student.component';
     SaveGroupComponent,
     DelModalComponent,
     ModelDirective,
-    StudentComponent
+    StudentComponent,
+    ButtonComponent,
+    LoadingComponent
   ],
   imports: [
     BrowserModule,

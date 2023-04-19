@@ -1,3 +1,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.hoverOrange {
+    @apply  text-white group-hover:bg-gradient-to-r group-hover:from-amber-500 group-hover:to-pink-500 group-hover:bg-clip-text group-hover:text-transparent;
+}
+.contOrange {
+    @apply w-full rounded-xl bg-gradient-to-r from-amber-500 to-pink-500 relative p-1 hover:scale-105 transition;
+}
+.inside {
+    @apply w-full h-full p-3 shadow-inner group-hover:bg-white transition rounded-lg;
+}

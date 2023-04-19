@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { SaveStudentComponent } from 'src/app/components/modal-dialog/save-student/save-student.component';
 import { Modal } from 'src/app/model/modal';
 import { IStudent } from 'src/app/model/student';
 import { ModalDialogService } from 'src/app/services/modal-dialog.service';
@@ -22,13 +23,13 @@ export class StudentsPageComponent {
   getStudents(){
     this.studentService.getStudents().subscribe(item=>this.students = item);
   }
-  saveStudent(student: IStudent | undefined, index : number){
+  saveStudent(){
     console.log("add student")
-    // this.md.openDialog<IStudent>(student, Modal.saveStudent).subscribe((data)=>{
-    //   console.log("data student",data)
-    //   student ? this.students![index] = data : this.students?.push(data);
+    this.md.openDialog<IStudent>(undefined, SaveStudentComponent).subscribe((data)=>{
+      console.log("data student",data)
+      this.students?.push(data);
 
-    // });
+    });
   }
 
   deleteStudent(student: IStudent){
