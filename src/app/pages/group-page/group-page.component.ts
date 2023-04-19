@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { takeUntil } from 'rxjs';
+import { SaveGroupComponent } from 'src/app/components/modal-dialog/save-group/save-group.component';
+import { SaveStudentComponent } from 'src/app/components/modal-dialog/save-student/save-student.component';
 import { IGroup } from 'src/app/model/group';
 import { Modal } from 'src/app/model/modal';
 import { IStudent } from 'src/app/model/student';
@@ -14,7 +17,7 @@ import { StudentService } from 'src/app/services/student.service';
 })
 export class GroupPageComponent {
   group?:IGroup;
-
+  
   emptyStudent: IStudent = {
     id: NaN,
     name:'',
@@ -37,18 +40,18 @@ export class GroupPageComponent {
     this.groupService.getGroup(id)
       .subscribe(group => this.group = group);
   }
-
-  saveStudent(student: IStudent | undefined, index : number){
+  getEmoji(){
+    let string = "😍/🧙/🚴/👩";
+    let arr = string.split('/');
+    return arr[Math.floor(Math.random() * arr.length)]
+  }
+  saveStudent(){
+   
     this.emptyStudent.group = this.group?.id!;
-    console.log("add student")
-    this.md.openDialog<IStudent>(student || this.emptyStudent, Modal.saveStudent).subscribe((data)=>{
+    this.md.openDialog<IStudent>(this.emptyStudent, SaveStudentComponent).subscribe((data)=>{
       console.log("data student",data)
-      if(student){
-        data.group === this.group!.id ?  this.group!.students[index] = data :  this.group!.students.splice(index,1)
-       
-      }else{
        this.group?.students.push(data);
-      }
+
     });
   }
 
@@ -64,5 +67,18 @@ export class GroupPageComponent {
         console.error("r err", e)
       }
     })
+  }
+
+  saveGroup(group: IGroup){
+    this.md.openDialog<IGroup>(group, SaveGroupComponent)
+      
+      .subscribe({
+        next: (data) => {
+          console.log("data", data)
+          this.group = data;
+          
+        },
+        error: (e) => console.error("r err", e)
+      });
   }
 }

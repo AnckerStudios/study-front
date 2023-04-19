@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
+import { DelModalComponent } from 'src/app/components/modal-dialog/del-modal/del-modal.component';
+import { SaveGroupComponent } from 'src/app/components/modal-dialog/save-group/save-group.component';
 import { IGroup } from 'src/app/model/group';
 import { Modal } from 'src/app/model/modal';
 import { GroupService } from 'src/app/services/group.service';
@@ -40,7 +42,7 @@ export class GroupsPageComponent {
 
   saveGroup(group: IGroup | undefined, index: number) {
     console.log("add")
-    this.md.openDialog<IGroup>(group, Modal.saveGroup)
+    this.md.openDialog<IGroup>(group, SaveGroupComponent)
       .pipe(takeUntil(this.notifier$))
       .subscribe({
         next: (data) => {

@@ -1,7 +1,8 @@
 import { formatDate } from '@angular/common';
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { IGroup } from 'src/app/model/group';
+import { ModalComponent } from 'src/app/model/modalComponent';
 import { IStudent } from 'src/app/model/student';
 import { GroupService } from 'src/app/services/group.service';
 import { ModalDialogService } from 'src/app/services/modal-dialog.service';
@@ -12,7 +13,8 @@ import { StudentService } from 'src/app/services/student.service';
   templateUrl: './save-student.component.html',
   styleUrls: ['./save-student.component.css']
 })
-export class SaveStudentComponent {
+export class SaveStudentComponent implements ModalComponent{
+
   @Output() response = new EventEmitter<IStudent>();
   groups?: IGroup[];
   dateStringControl = new FormControl('2020-09-28');
@@ -29,7 +31,7 @@ export class SaveStudentComponent {
     student && this.form.setValue({
       id: student.id,
       name: student.name,
-      birthdate: student.birthdate,
+      birthdate: student.birthdate ,
       number: student.number,
       group: student.group
 

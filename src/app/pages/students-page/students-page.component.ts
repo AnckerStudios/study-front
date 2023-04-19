@@ -24,11 +24,11 @@ export class StudentsPageComponent {
   }
   saveStudent(student: IStudent | undefined, index : number){
     console.log("add student")
-    this.md.openDialog<IStudent>(student, Modal.saveStudent).subscribe((data)=>{
-      console.log("data student",data)
-      student ? this.students![index] = data : this.students?.push(data);
+    // this.md.openDialog<IStudent>(student, Modal.saveStudent).subscribe((data)=>{
+    //   console.log("data student",data)
+    //   student ? this.students![index] = data : this.students?.push(data);
 
-    });
+    // });
   }
 
   deleteStudent(student: IStudent){

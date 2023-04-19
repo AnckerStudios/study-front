@@ -1,13 +1,9 @@
-<div *ngIf="md.modalType">
+<div [hidden]="!( md.component$ | async)">
     <div class=" bg-black/50 fixed z-20 top-0 bottom-0 right-0 left-0 w-screen h-screen" (click)="close()">
     </div>
 
-    <div [ngSwitch]="md.modalType"
-        class="bg-white top-0 w-[600px] rounded-2xl shadow-lg absolute p-4 px-16 z-40 left-1/2 -translate-x-1/2 flex flex-col gap-4 items-center">
-        <div class="text-center text-3xl font-semibold border-b pb-4">Header</div>
-        
-        <app-del-modal *ngSwitchCase="Modal.del" (response)="confirm($event)"/>
-        <app-save-group *ngSwitchCase="Modal.saveGroup" (response)="confirm($event)"/>
-        <app-save-student *ngSwitchCase="Modal.saveStudent" (response)="confirm($event)"/>
+    <div
+        class="bg-white top-0 w-[600px] rounded-2xl shadow-lg absolute p-4 px-16 z-40 left-1/2 -translate-x-1/2 mt-40 flex flex-col gap-4 items-center">
+        <ng-template appModel ></ng-template>
     </div>
 </div>

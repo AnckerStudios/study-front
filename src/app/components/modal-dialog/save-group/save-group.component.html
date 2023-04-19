@@ -1,7 +1,8 @@
 <form [formGroup]="form" (submit)="confirm()" class="flex flex-col gap-4">
+    <div class="text-center text-3xl font-semibold border-b pb-4 ">{{!form.value.id ? "Создание " : "Редактирование"}} </div>
     <input class="rounded-2xl border w-full px-4 py-2 bg-gray-200 " formControlName="name">
     <button type="submit">oK</button>
-    <div>{{form.value | json}}</div>
+    <div class="max-w-full">{{form.value | json}}</div>
 </form>
 
 <div>

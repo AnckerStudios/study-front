@@ -1,4 +1,6 @@
+
 <form [formGroup]="form" (submit)="confirm()" class="flex flex-col gap-4">
+    <div class="text-center text-3xl font-semibold border-b pb-4 ">{{!form.value.id ? "Создание " : "Редактирование"}} </div>
     <input class="rounded-2xl border w-full px-4 py-2 bg-gray-200 " formControlName="name">
     <input type="date" class="rounded-2xl border w-full px-4 py-2 bg-gray-200 " formControlName="birthdate">
     <input type="number" class="rounded-2xl border w-full px-4 py-2 bg-gray-200 " formControlName="number">

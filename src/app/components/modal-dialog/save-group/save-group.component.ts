@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { GROUPS } from 'src/app/data/groups';
 import { STUDENTS } from 'src/app/data/students';
 import { IGroup } from 'src/app/model/group';
+import { ModalComponent } from 'src/app/model/modalComponent';
 import { IStudent } from 'src/app/model/student';
 import { GroupService } from 'src/app/services/group.service';
 import { ModalDialogService } from 'src/app/services/modal-dialog.service';
@@ -13,7 +14,8 @@ import { ModalDialogService } from 'src/app/services/modal-dialog.service';
   templateUrl: './save-group.component.html',
   styleUrls: ['./save-group.component.css']
 })
-export class SaveGroupComponent {
+export class SaveGroupComponent implements ModalComponent{
+  // @Input() data: string = "fff";
   @Output() response = new EventEmitter<IGroup>();
   constructor(private fb: FormBuilder,public md: ModalDialogService, private groupService: GroupService) { }
   ngOnInit(){

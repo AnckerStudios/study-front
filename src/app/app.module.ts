@@ -14,6 +14,9 @@ import { SaveStudentComponent } from './components/modal-dialog/save-student/sav
 import { SaveGroupComponent } from './components/modal-dialog/save-group/save-group.component';
 import { DelModalComponent } from './components/modal-dialog/del-modal/del-modal.component';
 import { HttpClientModule } from '@angular/common/http';
+import { ModelDirective } from './model.directive';
+import { StudentComponent } from './components/student/student.component';
+
 
 @NgModule({
   declarations: [
@@ -26,7 +29,9 @@ import { HttpClientModule } from '@angular/common/http';
     ModalDialogComponent,
     SaveStudentComponent,
     SaveGroupComponent,
-    DelModalComponent
+    DelModalComponent,
+    ModelDirective,
+    StudentComponent
   ],
   imports: [
     BrowserModule,
