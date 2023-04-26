@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Subject, takeUntil } from 'rxjs';
 import { IStudent } from 'src/app/model/student';
 import { StudentService } from 'src/app/services/student.service';
 
@@ -10,6 +11,8 @@ import { StudentService } from 'src/app/services/student.service';
 })
 export class StudentPageComponent {
   student?:IStudent;
+  error?: string;
+  private readonly destroy$ = new Subject<void>();
   constructor(
     private route: ActivatedRoute,
     private studentService: StudentService
@@ -22,6 +25,18 @@ export class StudentPageComponent {
   getStudent(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
     this.studentService.getStudent(id)
-      .subscribe(student => this.student = student);
+    .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (data)=> {
+          this.student = data;
+        },
+        error: (e)=>{
+          this.error='404'
+        }
+      });
+  }
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

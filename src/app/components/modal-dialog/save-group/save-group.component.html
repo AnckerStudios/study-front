@@ -1,8 +1,21 @@
-<form [formGroup]="form"  class="flex flex-col gap-10 py-10">
-    <div class=" font-bold text-5xl font-sans flex justify-center bg-gradient-to-r from-amber-500 to-pink-500 bg-clip-text text-transparent ">{{!form.value.id ? "Создание " : "Редактирование"}} </div>
-    <input class="rounded-xl border w-full px-4 py-4 bg-gray-200 text-xl" formControlName="name" placeholder="Название">
-    <app-button text="ok" (eventClick)="confirm()"/> 
-    <!-- <button type="submit">oK</button> -->
-</form>
+<div class="relative">
+    <form [formGroup]="form" class="flex flex-col gap-4 py-10 {{status && 'invisible'}}">
+        <div
+            class=" font-bold text-5xl font-sans flex justify-center bg-gradient-to-r from-amber-500 to-pink-500 bg-clip-text text-transparent ">
+            {{!form.value.id ? "Создание " : "Редактирование"}} </div>
+        <input maxlength="100" class="rounded-xl border w-full px-4 py-4 bg-gray-200 text-xl" formControlName="name"
+            placeholder="Название">
+        <div class="text-center text-xl font-bold bg-gradient-to-r from-amber-500 to-pink-500 bg-clip-text text-transparent ">{{mes}}</div>
+        <app-button text="ok" (eventClick)="confirm()" />
+        <!-- <button type="submit">oK</button> -->
+    </form>
+    <app-loading *ngIf="status == 'loading'" />
 
-
+    <div *ngIf="status == 'error'" class="absolute right-1/2 top-1/2 translate-x-1/2 -translate-y-1/2">
+        <div
+            class=" font-bold text-5xl font-sans flex justify-center bg-gradient-to-r from-amber-500 to-pink-500 bg-clip-text text-transparent p-4">
+            Ошибка!
+        </div>
+        <app-button text="ok" (eventClick)="md.close()" />
+    </div>
+</div>

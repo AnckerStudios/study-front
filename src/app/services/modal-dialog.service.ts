@@ -1,6 +1,7 @@
 import { ComponentRef, Injectable, Type, ViewContainerRef } from '@angular/core';
 import { Subject } from 'rxjs';
 import { Modal } from '../model/modal';
+import { IGroup } from '../model/group';
 
 @Injectable({
   providedIn: 'root'
@@ -11,9 +12,12 @@ export class ModalDialogService {
 
   inputData: any;
   res?: Subject<any>;
- 
+  groups:IGroup[] = [];
   getInput<T>(): T{
     return this.inputData as T;
+  }
+  setGroups(groups:IGroup[]){
+    this.groups = groups;
   }
   openDialog<T>(obj: T | undefined, type: Type<any>): Subject<T>{
     

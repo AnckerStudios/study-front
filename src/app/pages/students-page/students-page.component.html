@@ -8,5 +8,6 @@
         
         <app-button text="Добавить студента" (eventClick)="saveStudent()"/>
     </div>
-    <app-loading *ngIf="!students" />
+    <app-loading *ngIf="!students && !error" />
+    <app-error [error]="error"/>
 </div>

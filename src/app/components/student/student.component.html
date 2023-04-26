@@ -1,7 +1,7 @@
 <button *ngIf="student" class="group contOrange">
     <div routerLink="/students/{{student.id}}" class="inside">
 
-        <div class=" font-bold text-2xl font-sans mx-auto ">{{ emoji}} <span class="hoverOrange">{{student.name}}</span></div>
+        <div class=" font-bold text-2xl px-16 font-sans mx-auto whitespace-nowrap overflow-hidden overflow-ellipsis">{{ emoji}} <span class="hoverOrange">{{student.name}}</span></div>
     </div>
     
     <div

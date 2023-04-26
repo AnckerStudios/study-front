@@ -1,6 +1,7 @@
 import { formatDate } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
+import { Subject, takeUntil } from 'rxjs';
 import { IGroup } from 'src/app/model/group';
 import { ModalComponent } from 'src/app/model/modalComponent';
 import { IStudent } from 'src/app/model/student';
@@ -13,10 +14,12 @@ import { StudentService } from 'src/app/services/student.service';
   templateUrl: './save-student.component.html',
   styleUrls: ['./save-student.component.css']
 })
-export class SaveStudentComponent implements ModalComponent{
-  status?:string;
+export class SaveStudentComponent implements ModalComponent {
+  status?: string;
+  mes?= '';
   @Output() response = new EventEmitter<IStudent>();
   groups?: IGroup[];
+  private readonly destroy$ = new Subject<void>();
   constructor(
     private fb: FormBuilder,
     public md: ModalDialogService,
@@ -28,7 +31,7 @@ export class SaveStudentComponent implements ModalComponent{
     student && this.form.setValue({
       id: student.id,
       name: student.name,
-      birthdate: student.birthdate, 
+      birthdate: student.birthdate && formatDate(student.birthdate, 'yyyy-MM-dd', 'en'),
       number: student.number,
       group: student.group
 
@@ -45,18 +48,32 @@ export class SaveStudentComponent implements ModalComponent{
 
   })
   getGroups() {
-    this.groupService.getGroups().subscribe(item => this.groups = item);
+    this.groupService.getGroups()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(item => this.groups = item);
   }
   confirm() {
+    if (!this.form.valid) {
+      this.mes = 'Заполни все поля'
+      return;
+    }
+
     this.status = 'loading'
-    this.form.status == "VALID" && this.studentService.saveStudent(this.form.getRawValue() as IStudent).subscribe({
-      next: (data) => {
-        this.response.emit(data);
-      },
-      error: (e) => {
-        console.error("r err", e);
-        this.status = 'error'
-      }
-    })
+    this.studentService.saveStudent(this.form.getRawValue() as IStudent)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (data) => {
+          this.response.emit(data);
+        },
+        error: (e) => {
+          console.error("r err", e);
+          this.status = 'error'
+        }
+      })
+
+  }
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { takeUntil } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 import { SaveGroupComponent } from 'src/app/components/modal-dialog/save-group/save-group.component';
 import { SaveStudentComponent } from 'src/app/components/modal-dialog/save-student/save-student.component';
 import { IGroup } from 'src/app/model/group';
@@ -16,8 +16,9 @@ import { StudentService } from 'src/app/services/student.service';
   styleUrls: ['./group-page.component.css']
 })
 export class GroupPageComponent {
+  error?: string;
   group?:IGroup;
-  
+  private readonly destroy$ = new Subject<void>();
   emptyStudent: IStudent = {
     id: NaN,
     name:'',
@@ -38,7 +39,15 @@ export class GroupPageComponent {
   getStudent(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
     this.groupService.getGroup(id)
-      .subscribe(group => this.group = group);
+    .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (data)=> {
+          this.group = data;
+        },
+        error: (e)=>{
+          this.error='404'
+        }
+      });
   }
   getEmoji(){
     let string = "😍/🧙/🚴/👩";
@@ -48,15 +57,19 @@ export class GroupPageComponent {
   saveStudent(){
    
     this.emptyStudent.group = this.group?.id!;
-    this.md.openDialog<IStudent>(this.emptyStudent, SaveStudentComponent).subscribe((data)=>{
+    this.md.openDialog<IStudent>(this.emptyStudent, SaveStudentComponent)
+    .pipe(takeUntil(this.destroy$))
+    .subscribe((data)=>{
       console.log("data student",data)
-       this.group?.students.push(data);
+      data.group === this.group?.id && this.group?.students.push(data);
 
     });
   }
 
   deleteStudent(student: IStudent){
-    this.studentService.deleteStudent(student.id).subscribe({
+    this.studentService.deleteStudent(student.id)
+    .pipe(takeUntil(this.destroy$))
+    .subscribe({
       next: (data) =>{
         console.log("delete ", data);
         if(this.group){
@@ -71,7 +84,7 @@ export class GroupPageComponent {
 
   saveGroup(group: IGroup){
     this.md.openDialog<IGroup>(group, SaveGroupComponent)
-      
+    .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (data) => {
           console.log("data", data)
@@ -80,5 +93,9 @@ export class GroupPageComponent {
         },
         error: (e) => console.error("r err", e)
       });
+  }
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Subject, takeUntil } from 'rxjs';
 import { SaveStudentComponent } from 'src/app/components/modal-dialog/save-student/save-student.component';
 import { Modal } from 'src/app/model/modal';
 import { IStudent } from 'src/app/model/student';
@@ -12,6 +13,8 @@ import { StudentService } from 'src/app/services/student.service';
 })
 export class StudentsPageComponent {
   students?:IStudent[];
+  error?: string;
+  private readonly destroy$ = new Subject<void>();
   constructor(
     private md: ModalDialogService,
     private studentService: StudentService
@@ -21,11 +24,22 @@ export class StudentsPageComponent {
     this.getStudents();
   }
   getStudents(){
-    this.studentService.getStudents().subscribe(item=>this.students = item);
+    this.studentService.getStudents()
+    .pipe(takeUntil(this.destroy$))
+    .subscribe({
+      next: (data) => {
+        this.students = data;
+      },
+      error: (e) => {
+        this.error = 'Кто-то украл бэк!'
+      }
+    });
   }
   saveStudent(){
     console.log("add student")
-    this.md.openDialog<IStudent>(undefined, SaveStudentComponent).subscribe((data)=>{
+    this.md.openDialog<IStudent>(undefined, SaveStudentComponent)
+    .pipe(takeUntil(this.destroy$))
+    .subscribe((data)=>{
       console.log("data student",data)
       this.students?.push(data);
 
@@ -33,7 +47,9 @@ export class StudentsPageComponent {
   }
 
   deleteStudent(student: IStudent){
-    this.studentService.deleteStudent(student.id).subscribe({
+    this.studentService.deleteStudent(student.id)
+    .pipe(takeUntil(this.destroy$))
+    .subscribe({
       next: (data) =>{
         console.log("delete ", data);
         if(this.students){
@@ -44,5 +60,9 @@ export class StudentsPageComponent {
         console.error("r err", e)
       }
     })
+  }
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

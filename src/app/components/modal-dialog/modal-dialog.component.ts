@@ -7,6 +7,7 @@ import { ModelDirective } from 'src/app/model.directive';
 import { SaveStudentComponent } from './save-student/save-student.component';
 import { DelModalComponent } from './del-modal/del-modal.component';
 import { ModalComponent } from 'src/app/model/modalComponent';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-modal-dialog',
@@ -16,12 +17,15 @@ import { ModalComponent } from 'src/app/model/modalComponent';
 export class ModalDialogComponent {
   compnent = SaveGroupComponent;
   Modal = Modal;
+  private readonly destroy$ = new Subject<void>();
   @ViewChild(ModelDirective) appModel!: ModelDirective;
 
 
   constructor(public md: ModalDialogService) {}
   ngOnInit(){
-    this.md.component$.subscribe({
+    this.md.component$
+    .pipe(takeUntil(this.destroy$))
+    .subscribe({
       next: (data)=>{
         if(data){
         const viewContainerRef = this.appModel.viewContainerRef;
@@ -37,5 +41,9 @@ export class ModalDialogComponent {
   }
   close(){
     this.md.close()
+  }
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

@@ -15,6 +15,7 @@ import { ModalDialogService } from 'src/app/services/modal-dialog.service';
 export class GroupsPageComponent {
   groups?: IGroup[];
   notifier$ = new Subject();
+  error?: string;
   constructor(
     private groupService: GroupService,
     private md: ModalDialogService
@@ -32,16 +33,14 @@ export class GroupsPageComponent {
           this.groups = data;
         },
         error: (e) => {
-          console.error("r err", e)
-          if(e.status === 0)
-          console.log("LLLLLLLLLLL");
-          
+          this.error = 'GG Ошибка'
         }
       });
   }
 
   saveGroup(group: IGroup | undefined, index: number) {
-    console.log("add")
+    console.log("add");
+    this.groups && this.md.setGroups(this.groups);
     this.md.openDialog<IGroup>(group, SaveGroupComponent)
       .pipe(takeUntil(this.notifier$))
       .subscribe({

@@ -11,4 +11,5 @@
         <app-button text="Добавить студента" (eventClick)="saveStudent()"/>
     </div>
 </div>
-<app-loading *ngIf="!group"/>
+<app-loading *ngIf="!group && !error"/>
+<app-error *ngIf="error" [error]="error"/>

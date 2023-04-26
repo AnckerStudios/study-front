@@ -3,12 +3,13 @@ import { Observable, delay, map, of, throwError } from 'rxjs';
 import { STUDENTS } from '../data/students';
 import { IStudent } from '../model/student';
 import { HttpClient, HttpParams } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class StudentService {
-  url = "http://localhost:8080/api/students"
+  url = `${environment.apiUrl}/students`
   constructor(private http: HttpClient) { }
 
   getStudents():Observable<IStudent[]>{
@@ -24,6 +25,6 @@ export class StudentService {
     // of(student).pipe(delay(1000));
   }
   deleteStudent(id: number){
-    return this.http.delete<IStudent>(this.url,{params: new HttpParams().set('id', id)}).pipe(delay(500));
+    return this.http.delete<IStudent>(this.url,{params: new HttpParams().set('id', id)});
   }
 }

@@ -18,6 +18,7 @@ import { ModelDirective } from './model.directive';
 import { StudentComponent } from './components/student/student.component';
 import { ButtonComponent } from './components/button/button.component';
 import { LoadingComponent } from './components/loading/loading.component';
+import { ErrorComponent } from './components/error/error.component';
 
 
 @NgModule({
@@ -35,7 +36,8 @@ import { LoadingComponent } from './components/loading/loading.component';
     ModelDirective,
     StudentComponent,
     ButtonComponent,
-    LoadingComponent
+    LoadingComponent,
+    ErrorComponent
   ],
   imports: [
     BrowserModule,

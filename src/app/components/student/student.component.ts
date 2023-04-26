@@ -5,6 +5,7 @@ import { GroupService } from 'src/app/services/group.service';
 import { ModalDialogService } from 'src/app/services/modal-dialog.service';
 import { StudentService } from 'src/app/services/student.service';
 import { SaveStudentComponent } from '../modal-dialog/save-student/save-student.component';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-student',
@@ -13,6 +14,7 @@ import { SaveStudentComponent } from '../modal-dialog/save-student/save-student.
 })
 export class StudentComponent {
   emoji?: string;
+  private readonly destroy$ = new Subject<void>();
   @Input()student?: IStudent;
   @Output() eventDelete = new EventEmitter<IStudent>(); 
   constructor(
@@ -27,7 +29,9 @@ export class StudentComponent {
     return arr[Math.floor(Math.random() * arr.length)]
   }
   saveStudent(){
-    this.md.openDialog<IStudent>(this.student, SaveStudentComponent).subscribe((data)=>{
+    this.md.openDialog<IStudent>(this.student, SaveStudentComponent)
+    .pipe(takeUntil(this.destroy$))
+    .subscribe((data)=>{
       console.log("data student",data)
         this.student = data;
     });
@@ -35,5 +39,9 @@ export class StudentComponent {
 
   deleteStudent(){
     this.eventDelete.emit(this.student);
+  }
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
